@@ -17,9 +17,19 @@ jobs:
         uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
       - name: SSH into EC2
-        run: ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}
-        continue-on-error: false
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > /tmp/private_key.pem
+          chmod 600 /tmp/private_key.pem
+          ssh -o StrictHostKeyChecking=no -i /tmp/private_key.pem ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}
+        env:
+          PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        continue-on-error: false 
+      
+      # - name: SSH into EC2
+      #   run: ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}
+      #   continue-on-error: false
 
       - name: Execute Git Pull
         run: cd /openui && git pull origin main
