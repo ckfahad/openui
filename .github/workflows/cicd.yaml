@@ -61,7 +61,7 @@ jobs:
           echo "Doing ls below"
           ls
           echo "Changing directory to frontend"
-          cd /frontend
+          cd /home/runner/work/openui/openui/frontend
           pnpm install
           pnpm run dev
         #continue-on-error: false
