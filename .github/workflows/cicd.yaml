@@ -23,6 +23,8 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > /tmp/private_key.pem
           chmod 600 /tmp/private_key.pem
           ssh -o StrictHostKeyChecking=no -i /tmp/private_key.pem ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}
+          pwd
+          ls
         env:
           PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         continue-on-error: false 
