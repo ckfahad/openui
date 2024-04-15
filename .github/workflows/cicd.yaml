@@ -1,1 +1,56 @@
+name: CI/CD Pipeline
 
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: SSH into EC2 and Execute Git Pull
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /path/to/your/application
+            git pull
+
+      - name: Build and Deploy Application
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16' # Use the latest Node.js version
+
+        if: success()
+
+        steps:
+          - name: Install pnpm
+            run: npm install -g pnpm
+
+          - name: Install Dependencies
+            run: |
+              cd /path/to/your/application/frontend
+              pnpm install
+
+          - name: Build Frontend
+            run: |
+              cd /path/to/your/application/frontend
+              npm run build
+
+          - name: Install Backend Dependencies
+            run: |
+              cd /path/to/your/application/backend
+              pip install .
+
+          - name: Set OpenAI API Key
+            run: |
+              export OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+
+          - name: Run Backend
+            run: |
+              cd /path/to/your/application/backend
+              python -m openui
