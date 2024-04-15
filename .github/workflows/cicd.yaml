@@ -19,42 +19,50 @@ jobs:
           script: |
             cd /path/to/your/application
             git pull
+        continue-on-error: false
 
       - name: Build and Deploy Application
+        if: always()  # Ensure this step runs regardless of previous steps
         uses: actions/setup-node@v3
         with:
           node-version: '16' # Use the latest Node.js version
+        continue-on-error: false
 
-        steps:
-          - name: Install pnpm
-            run: npm install -g pnpm
-            continue-on-error: false  # Stop the workflow if this step fails
+      - name: Install pnpm
+        if: always()  # Ensure this step runs regardless of previous steps
+        run: npm install -g pnpm
+        continue-on-error: false
 
-          - name: Install Dependencies
-            run: |
-              cd /path/to/your/application/frontend
-              pnpm install
-            continue-on-error: false  # Stop the workflow if this step fails
+      - name: Install Dependencies
+        if: always()  # Ensure this step runs regardless of previous steps
+        run: |
+          cd /path/to/your/application/frontend
+          pnpm install
+        continue-on-error: false
 
-          - name: Build Frontend
-            run: |
-              cd /path/to/your/application/frontend
-              npm run build
-            continue-on-error: false  # Stop the workflow if this step fails
+      - name: Build Frontend
+        if: always()  # Ensure this step runs regardless of previous steps
+        run: |
+          cd /path/to/your/application/frontend
+          npm run build
+        continue-on-error: false
 
-          - name: Install Backend Dependencies
-            run: |
-              cd /path/to/your/application/backend
-              pip install .
-            continue-on-error: false  # Stop the workflow if this step fails
+      - name: Install Backend Dependencies
+        if: always()  # Ensure this step runs regardless of previous steps
+        run: |
+          cd /path/to/your/application/backend
+          pip install .
+        continue-on-error: false
 
-          - name: Set OpenAI API Key
-            run: |
-              export OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
-            continue-on-error: false  # Stop the workflow if this step fails
+      - name: Set OpenAI API Key
+        if: always()  # Ensure this step runs regardless of previous steps
+        run: |
+          export OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+        continue-on-error: false
 
-          - name: Run Backend
-            run: |
-              cd /path/to/your/application/backend
-              python -m openui
-            continue-on-error: false  # Stop the workflow if this step fails
+      - name: Run Backend
+        if: always()  # Ensure this step runs regardless of previous steps
+        run: |
+          cd /path/to/your/application/backend
+          python -m openui
+        continue-on-error: false
