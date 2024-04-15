@@ -10,15 +10,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: SSH into EC2 and Execute Git Pull
-        uses: appleboy/ssh-action@v1
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Setup SSH key
+        uses: webfactory/ssh-agent@v0.5.3
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            cd /path/to/your/application
-            git pull
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: SSH into EC2
+        run: ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}
+        continue-on-error: false
+
+      - name: Execute Git Pull
+        run: cd /openui && git pull origin main
         continue-on-error: false
 
       - name: Build and Deploy Application
