@@ -23,8 +23,14 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > /tmp/private_key.pem
           chmod 600 /tmp/private_key.pem
           ssh -o StrictHostKeyChecking=no -i /tmp/private_key.pem ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}
+          echo "Doing pwd below"
           pwd
+          echo "Doing ls below"
           ls
+          echo "Changing to openui directory"
+          cd /openui
+          echo "Doing git pull"
+          git pull origin main
         env:
           PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         continue-on-error: false 
@@ -33,9 +39,9 @@ jobs:
       #   run: ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}
       #   continue-on-error: false
 
-      - name: Execute Git Pull
-        run: cd /openui && git pull origin main
-        continue-on-error: false
+      # - name: Execute Git Pull
+      #   run: cd /openui && git pull origin main
+      #   continue-on-error: false
 
       - name: Build and Deploy Application
         if: always()  # Ensure this step runs regardless of previous steps
