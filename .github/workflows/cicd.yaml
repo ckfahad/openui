@@ -31,7 +31,7 @@ jobs:
           git pull origin main
         env:
           PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        continue-on-error: false 
+        #continue-on-error: false 
       
       # - name: SSH into EC2
       #   run: ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}
@@ -46,12 +46,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '16' # Use the latest Node.js version
-        continue-on-error: false
+        #continue-on-error: false
 
       - name: Install pnpm
         if: always()  # Ensure this step runs regardless of previous steps
         run: npm install -g pnpm
-        continue-on-error: false
+        #continue-on-error: false
 
       - name: Install Dependencies
         if: always()  # Ensure this step runs regardless of previous steps
@@ -60,32 +60,35 @@ jobs:
           pwd
           echo "Doing ls below"
           ls
-          #pnpm install
-        continue-on-error: false
+          echo "Changing directory to frontend"
+          cd /frontend
+          pnpm install
+          pnpm run dev
+        #continue-on-error: false
 
       - name: Build Frontend
         if: always()  # Ensure this step runs regardless of previous steps
         run: |
           cd /path/to/your/application/frontend
           npm run build
-        continue-on-error: false
+        #continue-on-error: false
 
       - name: Install Backend Dependencies
         if: always()  # Ensure this step runs regardless of previous steps
         run: |
           cd /path/to/your/application/backend
           pip install .
-        continue-on-error: false
+        #continue-on-error: false
 
       - name: Set OpenAI API Key
         if: always()  # Ensure this step runs regardless of previous steps
         run: |
           export OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
-        continue-on-error: false
+        #continue-on-error: false
 
       - name: Run Backend
         if: always()  # Ensure this step runs regardless of previous steps
         run: |
           cd /path/to/your/application/backend
           python -m openui
-        continue-on-error: false
+        #continue-on-error: false
