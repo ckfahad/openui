@@ -56,8 +56,11 @@ jobs:
       - name: Install Dependencies
         if: always()  # Ensure this step runs regardless of previous steps
         run: |
-          cd /path/to/your/application/frontend
-          pnpm install
+          echo "Doing pwd below"
+          pwd
+          echo "Doing ls below"
+          ls
+          #pnpm install
         continue-on-error: false
 
       - name: Build Frontend
