@@ -27,8 +27,6 @@ jobs:
           pwd
           echo "Doing ls below"
           ls
-          echo "Changing to openui directory"
-          cd /home/ubuntu/openui
           echo "Doing git pull"
           git pull origin main
         env:
