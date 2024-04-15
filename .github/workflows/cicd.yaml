@@ -62,8 +62,15 @@ jobs:
           ls
           echo "Changing directory to frontend"
           cd /home/runner/work/openui/openui/frontend
+          echo "starting pnpm install"
+          sleep 100
+          echo "starting pnpm install"
           pnpm install
+          echo "completed pnpm install"
+          echo "starting pnpm run dev"
           pnpm run dev
+          echo "completed pnpm run dev"
+          sleep 111
         #continue-on-error: false
 
       - name: Build Frontend
