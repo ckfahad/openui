@@ -45,7 +45,7 @@ jobs:
         if: always()  # Ensure this step runs regardless of previous steps
         uses: actions/setup-node@v3
         with:
-          node-version: '16' # Use the latest Node.js version
+          node-version: '18' # Use the latest Node.js version
         #continue-on-error: false
 
       - name: Install pnpm
